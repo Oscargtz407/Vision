@@ -48,6 +48,8 @@ public class Vision3 extends OpMode {
         // No es necesario implementar el loop para este caso
     }
 
+    // ...
+
     class ExamplePipeline extends OpenCvPipeline {
         Scalar rectColor = new Scalar(255.0, 0.0, 0.0);
 
@@ -60,8 +62,8 @@ public class Vision3 extends OpMode {
 
             Mat chessTowerCrop = hsv.submat(chessTowerRect);
 
-            Scalar lowerBound = new Scalar(0, 100, 100); // Bajo límite de rojo
-            Scalar upperBound = new Scalar(10, 255, 255); // Alto límite de rojo
+            Scalar lowerBound = new Scalar(0, 100, 100); // Ajusta según el rango de rojo en HSV
+            Scalar upperBound = new Scalar(10, 255, 255); // Ajusta según el rango de rojo en HSV
 
             Mat mask = new Mat();
             Core.inRange(chessTowerCrop, lowerBound, upperBound, mask);
@@ -79,7 +81,10 @@ public class Vision3 extends OpMode {
                     double epsilon = 0.02 * Imgproc.arcLength(new MatOfPoint2f(contour.toArray()), true);
                     MatOfPoint2f approxCurve = new MatOfPoint2f();
                     Imgproc.approxPolyDP(new MatOfPoint2f(contour.toArray()), approxCurve, epsilon, true);
-                    if (approxCurve.total() == 4) {  // Verificar si el contorno es cuadrado
+
+                    // Verificar si el contorno es cuadrado y ajustar según la forma específica si es necesario
+                    if (approxCurve.total() == 4) {
+                        // Puedes agregar condiciones adicionales aquí para verificar la forma específica si es necesario
                         Imgproc.drawContours(output, contours, -1, new Scalar(0, 255, 0), 2);
                         telemetry.addLine("Contorno de torre de ajedrez detectado");
                         break;  // Detener el bucle una vez que se encuentra un contorno válido
